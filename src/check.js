@@ -1,9 +1,17 @@
 'use strict';
 function extendType(proto, extensions) {
     extensions.forEach(ext => {
-        proto[ext.name] = ext
+        proto[ext.name] = ext;
     });
 }
+function getType(object) {
+    return object instanceof Array ? 'array' : typeof object;
+}
+
+function isInCorrectTypes(types, object) {
+    return types.indexOf(getType(object)) >= 0;
+}
+
 
 exports.init = function () {
     extendType(Object.prototype, [
@@ -20,24 +28,29 @@ exports.init = function () {
 
 
 function checkContainsKeys(keys) {
-    return keys.every(key => this.hasOwnProperty(key))
+    if (isInCorrectTypes(['array', 'object'], this))
+        return keys.every(key => this.hasOwnProperty(key));
 }
 
 function checkHasKeys(keys) {
-    return Object.keys(this).length == keys.length &&
-        Object.keys(this).every(key => keys.indexOf(key) >= 0);
+    if (isInCorrectTypes(['array', 'object'], this))
+        return Object.keys(this).length == keys.length &&
+            Object.keys(this).every(key => keys.indexOf(key) >= 0);
 }
 
 function checkContainsValues(values) {
+    if (!isInCorrectTypes(['array', 'object'], this))
+        return;
     var thisValues = Object
         .keys(this)
         .filter(k => this.hasOwnProperty(k))
         .map(key => this[key]);
     return values.every(v => thisValues.indexOf(v) >= 0);
-
 }
 
 function checkHasValues(values) {
+    if (!isInCorrectTypes(['array', 'object'], this))
+        return;
     var thisValues = Object.keys(this)
         .filter(key => this.hasOwnProperty(key))
         .map(key => this[key]);
@@ -46,17 +59,22 @@ function checkHasValues(values) {
 }
 
 function checkHasValueType(key, type) {
-    return this.hasOwnProperty(key) && this[key].__proto__ === type().__proto__
+    if (!isInCorrectTypes(['array', 'object'], this))
+        return;
+    return this.hasOwnProperty(key) && this[key].__proto__ === type().__proto__;
 }
 
 function checkHasLength(length) {
-    return this.length === length;
+    if (isInCorrectTypes(['array', 'string'], this))
+        return this.length === length;
 }
 
 function checkHasParamsCount(count) {
-    return this.length === count;
+    if (isInCorrectTypes(['function'], this))
+        return this.length === count;
 }
 
 function checkHasWordsCount(count) {
-    return this.split(' ').filter(w => w.length > 0).length === count;
+    if (isInCorrectTypes(['string'], this))
+        return this.split(' ').filter(w => w.length > 0).length === count;
 }
