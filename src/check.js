@@ -28,19 +28,22 @@ exports.init = function () {
 
 
 function checkContainsKeys(keys) {
-    if (isInCorrectTypes(['array', 'object'], this))
+    if (isInCorrectTypes(['array', 'object'], this)) {
         return keys.every(key => this.hasOwnProperty(key));
+    }
 }
 
 function checkHasKeys(keys) {
-    if (isInCorrectTypes(['array', 'object'], this))
+    if (isInCorrectTypes(['array', 'object'], this)) {
         return Object.keys(this).length == keys.length &&
             Object.keys(this).every(key => keys.indexOf(key) >= 0);
+    }
 }
 
 function checkContainsValues(values) {
-    if (!isInCorrectTypes(['array', 'object'], this))
+    if (!isInCorrectTypes(['array', 'object'], this)) {
         return;
+    }
     var thisValues = Object
         .keys(this)
         .filter(k => this.hasOwnProperty(k))
@@ -49,8 +52,9 @@ function checkContainsValues(values) {
 }
 
 function checkHasValues(values) {
-    if (!isInCorrectTypes(['array', 'object'], this))
+    if (!isInCorrectTypes(['array', 'object'], this)) {
         return;
+    }
     var thisValues = Object.keys(this)
         .filter(key => this.hasOwnProperty(key))
         .map(key => this[key]);
@@ -59,22 +63,26 @@ function checkHasValues(values) {
 }
 
 function checkHasValueType(key, type) {
-    if (!isInCorrectTypes(['array', 'object'], this))
+    if (!isInCorrectTypes(['array', 'object'], this)) {
         return;
+    }
     return this.hasOwnProperty(key) && this[key].__proto__ === type().__proto__;
 }
 
 function checkHasLength(length) {
-    if (isInCorrectTypes(['array', 'string'], this))
+    if (isInCorrectTypes(['array', 'string'], this)) {
         return this.length === length;
+    }
 }
 
 function checkHasParamsCount(count) {
-    if (isInCorrectTypes(['function'], this))
+    if (isInCorrectTypes(['function'], this)) {
         return this.length === count;
+    }
 }
 
 function checkHasWordsCount(count) {
-    if (isInCorrectTypes(['string'], this))
+    if (isInCorrectTypes(['string'], this)) {
         return this.split(' ').filter(w => w.length > 0).length === count;
+    }
 }
