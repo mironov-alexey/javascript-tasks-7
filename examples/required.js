@@ -26,5 +26,6 @@ console.log(
 
     func.checkHasParamsCount(2), // true
 
+    //str.checkHasWordsCount(2), // true
     str.checkHasWordsCount(2) // true
 );

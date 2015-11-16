@@ -1,15 +1,21 @@
 'use strict';
+function extendType(proto, extensions) {
+    extensions.forEach(ext => {
+        proto[ext.name] = ext
+    });
+}
 
 exports.init = function () {
-    Object.prototype.checkContainsKeys = checkContainsKeys;
-    Object.prototype.checkHasKeys = checkHasKeys;
-    Object.prototype.checkContainsValues = checkContainsValues;
-    Object.prototype.checkHasValues = checkHasValues;
-    Object.prototype.checkHasValueType = checkHasValueType;
-    Array.prototype.checkHasLength = checkHasLength;
-    String.prototype.checkHasLength = checkHasLength;
-    String.prototype.checkHasWordsCount = checkHasWordsCount;
-    Function.prototype.checkHasParamsCount = checkHasParamsCount
+    extendType(Object.prototype, [
+        checkContainsKeys,
+        checkHasKeys,
+        checkContainsValues,
+        checkHasValues,
+        checkHasValueType
+    ]);
+    extendType(Array.prototype, [checkHasLength]);
+    extendType(String.prototype, [checkHasLength, checkHasWordsCount]);
+    extendType(Function.prototype, [checkHasParamsCount]);
 };
 
 
