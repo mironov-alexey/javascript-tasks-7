@@ -4,6 +4,7 @@ function extendType(proto, extensions) {
         proto[ext.name] = ext;
     });
 }
+
 function getType(object) {
     return object instanceof Array ? 'array' : typeof object;
 }
